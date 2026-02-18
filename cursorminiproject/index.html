@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrowdWatch — Crowd Density Estimation for Public Safety</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav__container">
+            <a href="#" class="nav__logo">
+                <span class="nav__logo-icon">◈</span>
+                CrowdWatch
+            </a>
+            <ul class="nav__links">
+                <li><a href="#video-analyzer">Analyze Video</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#benefits">Benefits</a></li>
+                <li><a href="#contact" class="nav__cta">Get Started</a></li>
+            </ul>
+            <button class="nav__toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero__grid">
+            <div class="hero__content">
+                <span class="hero__badge">AI-Powered Public Safety</span>
+                <h1 class="hero__title">
+                    Real-Time Crowd Density
+                    <span class="hero__accent">Estimation</span>
+                </h1>
+                <p class="hero__desc">
+                    Safeguard public spaces with intelligent monitoring. Our system analyzes live video feeds to estimate crowd density, enabling proactive safety management and rapid response to potential incidents.
+                </p>
+                <div class="hero__actions">
+                    <a href="#contact" class="btn btn--primary">Request Demo</a>
+                    <a href="#how-it-works" class="btn btn--secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero__visual">
+                <div class="hero__dashboard">
+                    <div class="hero__dashboard-header">
+                        <span class="hero__dashboard-dot"></span>
+                        <span class="hero__dashboard-dot"></span>
+                        <span class="hero__dashboard-dot"></span>
+                        <span class="hero__dashboard-label">Live Monitor</span>
+                    </div>
+                    <div class="hero__dashboard-content">
+                        <div class="density-indicator">
+                            <div class="density-indicator__bar" data-density="65"></div>
+                            <div class="density-indicator__labels">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                        <div class="hero__stats">
+                            <div class="stat">
+                                <span class="stat__value">2.4k</span>
+                                <span class="stat__label">People Detected</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat__value">Moderate</span>
+                                <span class="stat__label">Density Level</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat__value">98.2%</span>
+                                <span class="stat__label">Accuracy</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__scroll">
+            <span>Scroll to explore</span>
+            <div class="hero__scroll-line"></div>
+        </div>
+    </header>
+
+    <section id="video-analyzer" class="section video-analyzer">
+        <div class="section__header">
+            <h2 class="section__title">Analyze Your Video</h2>
+            <p class="section__desc">Upload a video clip to detect people and get crowd density estimation (Low, Moderate, or High).</p>
+        </div>
+        <div class="video-analyzer__card">
+            <div class="video-analyzer__upload">
+                <label class="video-analyzer__dropzone" id="dropzone">
+                    <input type="file" accept="video/*" id="video-input" hidden>
+                    <span class="video-analyzer__dropzone-icon">+</span>
+                    <span class="video-analyzer__dropzone-text">Drop a video file here or click to browse</span>
+                </label>
+            </div>
+            <div class="video-analyzer__preview-area" id="preview-area" style="display: none;">
+                <video id="video-preview" muted playsinline></video>
+                <canvas id="analysis-canvas" style="display: none;"></canvas>
+                <div class="video-analyzer__actions">
+                    <button type="button" class="btn btn--primary" id="analyze-btn">Analyze Video</button>
+                    <button type="button" class="btn btn--secondary" id="clear-btn">Clear</button>
+                </div>
+            </div>
+            <div class="video-analyzer__status" id="status-area"></div>
+            <div class="video-analyzer__results" id="results-area" style="display: none;">
+                <h3 class="video-analyzer__results-title">Results</h3>
+                <div class="video-analyzer__results-grid">
+                    <div class="result-card">
+                        <span class="result-card__label">People Detected</span>
+                        <span class="result-card__value" id="result-count">—</span>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-card__label">Density Level</span>
+                        <span class="result-card__value result-card__value--density" id="result-density">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section features">
+        <div class="section__header">
+            <h2 class="section__title">Core Capabilities</h2>
+            <p class="section__desc">Built for emergency responders, venue managers, and municipal authorities.</p>
+        </div>
+        <div class="features__grid">
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3>Live Video Analysis</h3>
+                <p>Process multiple camera feeds simultaneously to estimate crowd density across large venues and outdoor spaces.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3>Real-Time Alerts</h3>
+                <p>Instant notifications when density exceeds safe thresholds, enabling swift deployment of safety personnel.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <h3>Predictive Analytics</h3>
+                <p>AI models forecast crowd buildup to help plan staffing, barriers, and evacuation routes ahead of time.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                    </svg>
+                </div>
+                <h3>Privacy-First</h3>
+                <p>Estimates density without identifying individuals. No facial recognition or personal data collection.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4h16v6H4zM4 14h7v6H4zM15 14h5v6h-5z"/>
+                    </svg>
+                </div>
+                <h3>Zone-Based Heatmaps</h3>
+                <p>Visualize crowd density as color-coded heatmaps so operators can immediately spot hotspots and bottlenecks.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 6v6l4 2m5-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3>Incident Replay & Reports</h3>
+                <p>Review past events with synchronized density timelines and exportable reports for debriefs and compliance.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 7h16M4 12h10M4 17h7"/>
+                    </svg>
+                </div>
+                <h3>Open APIs & Integrations</h3>
+                <p>Connect with VMS platforms, ticketing systems, and command centers via secure REST and webhook APIs.</p>
+            </article>
+            <article class="feature-card">
+                <div class="feature-card__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 12l2 2 4-4m-9 9h10a2 2 0 002-2V7a2 2 0 00-2-2H9L7 7H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <h3>Role-Based Access Control</h3>
+                <p>Granular permissions for operators, incident commanders, and analysts to keep sensitive data protected.</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section how-it-works">
+        <div class="section__header">
+            <h2 class="section__title">How It Works</h2>
+            <p class="section__desc">From camera feed to actionable insights in milliseconds.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <span class="step__number">01</span>
+                <h3>Ingest</h3>
+                <p>Connect existing CCTV or IP cameras. No hardware replacement required.</p>
+            </div>
+            <div class="step__connector"></div>
+            <div class="step">
+                <span class="step__number">02</span>
+                <h3>Analyze</h3>
+                <p>Deep learning models process frames to estimate people count and density per zone.</p>
+            </div>
+            <div class="step__connector"></div>
+            <div class="step">
+                <span class="step__number">03</span>
+                <h3>Alert</h3>
+                <p>Threshold-based and anomaly-based alerts notify your team via dashboard, SMS, or API.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits" class="section benefits">
+        <div class="benefits__content">
+            <h2 class="section__title">Built for Public Safety</h2>
+            <ul class="benefits__list">
+                <li>
+                    <strong>Reduce stampede risk</strong> — Identify overcrowding before it becomes dangerous.
+                </li>
+                <li>
+                    <strong>Optimize resource allocation</strong> — Deploy security and medical staff where they're needed most.
+                </li>
+                <li>
+                    <strong>Improve emergency response</strong> — Evacuation planning informed by real-time density data.
+                </li>
+                <li>
+                    <strong>Compliance & reporting</strong> — Auditable logs for regulatory requirements and incident review.
+                </li>
+            </ul>
+        </div>
+        <div class="benefits__visual">
+            <div class="benefits__card">
+                <span class="benefits__card-title">Use Cases</span>
+                <ul class="benefits__use-cases">
+                    <li>Stadiums & arenas</li>
+                    <li>Transit hubs</li>
+                    <li>Festivals & events</li>
+                    <li>Shopping malls</li>
+                    <li>Public squares</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact">
+        <div class="contact__card">
+            <h2 class="section__title">Ready to Get Started?</h2>
+            <p class="contact__desc">Request a demo or speak with our team about deploying CrowdWatch in your venues.</p>
+            <form class="contact__form">
+                <div class="form__row">
+                    <input type="text" placeholder="Your name" required>
+                    <input type="email" placeholder="Email address" required>
+                </div>
+                <input type="text" placeholder="Organization" required>
+                <textarea placeholder="Tell us about your use case..." rows="4"></textarea>
+                <button type="submit" class="btn btn--primary btn--full">Request Demo</button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <a href="#" class="footer__logo">
+                <span class="nav__logo-icon">◈</span>
+                CrowdWatch
+            </a>
+            <p class="footer__tagline">Crowd density estimation for public safety management.</p>
+            <p class="footer__copy">&copy; 2025 CrowdWatch. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.2"></script>
+    <script src="script.js"></script>
+    <script src="video-analyzer.js"></script>
+</body>
+</html>
